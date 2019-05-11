@@ -7,14 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E35DEDC2286678C003624FE /* AlignmentCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35DEDB2286678B003624FE /* AlignmentCellDelegate.swift */; };
+		3E35DEDE22867DDC003624FE /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35DEDD22867DDC003624FE /* ToggleButton.swift */; };
+		3E3A2A1F22869F0F0000D55E /* ColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A2A1E22869F0F0000D55E /* ColorTableViewCell.swift */; };
+		3E3A2A2122869FBD0000D55E /* ColorCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A2A2022869FBD0000D55E /* ColorCellDelegate.swift */; };
+		3E3A2A232286B01D0000D55E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A2A222286B01D0000D55E /* Constants.swift */; };
 		3E6F4B7B22788C110091832C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6F4B7A22788C110091832C /* AppDelegate.swift */; };
 		3E6F4B7D22788C110091832C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6F4B7C22788C110091832C /* ViewController.swift */; };
 		3E6F4B8022788C110091832C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6F4B7E22788C110091832C /* Main.storyboard */; };
 		3E6F4B8222788C130091832C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E6F4B8122788C130091832C /* Assets.xcassets */; };
 		3E6F4B8522788C130091832C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6F4B8322788C130091832C /* LaunchScreen.storyboard */; };
+		3E9E3CE9228665AB006167DE /* AlignmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9E3CE8228665AB006167DE /* AlignmentTableViewCell.swift */; };
+		3E9E3CEB228665C6006167DE /* FontTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9E3CEA228665C6006167DE /* FontTableViewCell.swift */; };
+		3E9E3CED228665D2006167DE /* SizeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9E3CEC228665D2006167DE /* SizeTableViewCell.swift */; };
+		7679CCD34DE70CFFBCFEDD48 /* Pods_Drag_Text_View_Experiment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5EBC3F16DE0CCB0910DF5D /* Pods_Drag_Text_View_Experiment.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E35DEDB2286678B003624FE /* AlignmentCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignmentCellDelegate.swift; sourceTree = "<group>"; };
+		3E35DEDD22867DDC003624FE /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
+		3E3A2A1E22869F0F0000D55E /* ColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTableViewCell.swift; sourceTree = "<group>"; };
+		3E3A2A2022869FBD0000D55E /* ColorCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCellDelegate.swift; sourceTree = "<group>"; };
+		3E3A2A222286B01D0000D55E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3E49A581DD863B29EF1A6035 /* Pods-Drag Text View Experiment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Drag Text View Experiment.release.xcconfig"; path = "Pods/Target Support Files/Pods-Drag Text View Experiment/Pods-Drag Text View Experiment.release.xcconfig"; sourceTree = "<group>"; };
 		3E6F4B7722788C110091832C /* Drag Text View Experiment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drag Text View Experiment.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E6F4B7A22788C110091832C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E6F4B7C22788C110091832C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +37,11 @@
 		3E6F4B8122788C130091832C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E6F4B8422788C130091832C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E6F4B8622788C130091832C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E9E3CE8228665AB006167DE /* AlignmentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignmentTableViewCell.swift; sourceTree = "<group>"; };
+		3E9E3CEA228665C6006167DE /* FontTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontTableViewCell.swift; sourceTree = "<group>"; };
+		3E9E3CEC228665D2006167DE /* SizeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeTableViewCell.swift; sourceTree = "<group>"; };
+		55AEF39E70EF23B83023920F /* Pods-Drag Text View Experiment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Drag Text View Experiment.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Drag Text View Experiment/Pods-Drag Text View Experiment.debug.xcconfig"; sourceTree = "<group>"; };
+		AD5EBC3F16DE0CCB0910DF5D /* Pods_Drag_Text_View_Experiment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Drag_Text_View_Experiment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +49,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7679CCD34DE70CFFBCFEDD48 /* Pods_Drag_Text_View_Experiment.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		155A464D20FA687F35719B6D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				55AEF39E70EF23B83023920F /* Pods-Drag Text View Experiment.debug.xcconfig */,
+				3E49A581DD863B29EF1A6035 /* Pods-Drag Text View Experiment.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		3E6F4B6E22788C110091832C = {
 			isa = PBXGroup;
 			children = (
 				3E6F4B7922788C110091832C /* Drag Text View Experiment */,
 				3E6F4B7822788C110091832C /* Products */,
+				155A464D20FA687F35719B6D /* Pods */,
+				6F06AF00866FAC15081B83D4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,12 +88,28 @@
 			children = (
 				3E6F4B7A22788C110091832C /* AppDelegate.swift */,
 				3E6F4B7C22788C110091832C /* ViewController.swift */,
+				3E35DEDD22867DDC003624FE /* ToggleButton.swift */,
+				3E3A2A222286B01D0000D55E /* Constants.swift */,
+				3E9E3CE8228665AB006167DE /* AlignmentTableViewCell.swift */,
+				3E9E3CEA228665C6006167DE /* FontTableViewCell.swift */,
+				3E9E3CEC228665D2006167DE /* SizeTableViewCell.swift */,
+				3E3A2A1E22869F0F0000D55E /* ColorTableViewCell.swift */,
 				3E6F4B7E22788C110091832C /* Main.storyboard */,
+				3E35DEDB2286678B003624FE /* AlignmentCellDelegate.swift */,
+				3E3A2A2022869FBD0000D55E /* ColorCellDelegate.swift */,
 				3E6F4B8122788C130091832C /* Assets.xcassets */,
 				3E6F4B8322788C130091832C /* LaunchScreen.storyboard */,
 				3E6F4B8622788C130091832C /* Info.plist */,
 			);
 			path = "Drag Text View Experiment";
+			sourceTree = "<group>";
+		};
+		6F06AF00866FAC15081B83D4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AD5EBC3F16DE0CCB0910DF5D /* Pods_Drag_Text_View_Experiment.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +119,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3E6F4B8922788C130091832C /* Build configuration list for PBXNativeTarget "Drag Text View Experiment" */;
 			buildPhases = (
+				407BA4F1DA6A6A4A2A52F6AA /* [CP] Check Pods Manifest.lock */,
 				3E6F4B7322788C110091832C /* Sources */,
 				3E6F4B7422788C110091832C /* Frameworks */,
 				3E6F4B7522788C110091832C /* Resources */,
+				532C91CE6EAA21C1FB322C00 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -130,11 +180,68 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		407BA4F1DA6A6A4A2A52F6AA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Drag Text View Experiment-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		532C91CE6EAA21C1FB322C00 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Drag Text View Experiment/Pods-Drag Text View Experiment-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ColorSlider/ColorSlider.framework",
+				"${BUILT_PRODUCTS_DIR}/MKColorPicker/MKColorPicker.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ColorSlider.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKColorPicker.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Drag Text View Experiment/Pods-Drag Text View Experiment-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3E6F4B7322788C110091832C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E35DEDE22867DDC003624FE /* ToggleButton.swift in Sources */,
+				3E9E3CED228665D2006167DE /* SizeTableViewCell.swift in Sources */,
+				3E9E3CEB228665C6006167DE /* FontTableViewCell.swift in Sources */,
+				3E35DEDC2286678C003624FE /* AlignmentCellDelegate.swift in Sources */,
+				3E9E3CE9228665AB006167DE /* AlignmentTableViewCell.swift in Sources */,
+				3E3A2A232286B01D0000D55E /* Constants.swift in Sources */,
+				3E3A2A1F22869F0F0000D55E /* ColorTableViewCell.swift in Sources */,
+				3E3A2A2122869FBD0000D55E /* ColorCellDelegate.swift in Sources */,
 				3E6F4B7D22788C110091832C /* ViewController.swift in Sources */,
 				3E6F4B7B22788C110091832C /* AppDelegate.swift in Sources */,
 			);
@@ -280,6 +387,7 @@
 		};
 		3E6F4B8A22788C130091832C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55AEF39E70EF23B83023920F /* Pods-Drag Text View Experiment.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -298,6 +406,7 @@
 		};
 		3E6F4B8B22788C130091832C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E49A581DD863B29EF1A6035 /* Pods-Drag Text View Experiment.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
