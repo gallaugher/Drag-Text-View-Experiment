@@ -11,7 +11,6 @@ import UIKit
 class AlignmentTableViewCell: UITableViewCell {
     weak var delegate: AlignmentCellDelegate?
     @IBOutlet weak var alignmentSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var colorButton: UIButton!
     @IBOutlet weak var styleView: UIView!
     
     @IBAction func alignmentPressed(_ sender: UISegmentedControl) {
@@ -21,9 +20,4 @@ class AlignmentTableViewCell: UITableViewCell {
     @IBAction func stylePressed(_ sender: ToggleButton) {
         delegate?.styleButtonSelected(sender)
     }
-
-    @IBAction func colorPressed(_ sender: UIButton) {
-        delegate?.colorSelectionButtonPressed(sender)
-    }
-
 }

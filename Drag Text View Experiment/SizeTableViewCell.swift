@@ -9,7 +9,17 @@
 import UIKit
 
 class SizeTableViewCell: UITableViewCell {
-
-
-
+    weak var delegate: SizeCellDelegate?
+    
+    @IBOutlet weak var fontSizeStepper: UIStepper!
+    @IBOutlet weak var fontSizeLabel: UILabel!
+    
+    func configureSizeCell(size: Int) {
+        fontSizeLabel.text = "\(size) pt."
+        fontSizeStepper.value = Double(size)
+    }
+    
+    @IBAction func stepperPressed(_ sender: UIStepper) {
+        delegate?.fontSizeStepperPressed(Int(fontSizeStepper!.value))
+    }
 }

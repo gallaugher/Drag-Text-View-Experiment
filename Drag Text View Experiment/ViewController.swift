@@ -15,13 +15,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     struct TextBlock {
         var text = ""
         var origin = CGPoint(x: 0, y: 0)
-        var fontColor = UIColor.black
+        var textColor = UIColor.black
         var fontSize: CGFloat = 20.0
         var font = UIFont.systemFont(ofSize: 20.0)
         var backgroundColor = UIColor.clear
         var isBold = false
         var isItalic = false
         var isUnderlined = false
+        var alignment = 0 // left alignment
     }
     
     @IBOutlet weak var screenView: UIView! // a 320 x 240 view
@@ -64,7 +65,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         newField.borderStyle = .roundedRect
         newField.isUserInteractionEnabled = true
         newField.addGestureRecognizer(addGestureToField())
-        // newField.backgroundColor = UIColor.red
         newField.sizeToFit()
         let newFieldHeight = newField.frame.height
         newFieldRect = CGRect(x: 0, y: 0, width: 320, height: newFieldHeight)
@@ -101,12 +101,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             print("ERROR: Should not have arrived in the else in prepareForSegue")
         }
     }
-    
-    //    @IBAction func unwindFromFonts(for segue: UIStoryboardSegue, sender: Any?) {
-    //        print("<><><> I'm in the Unwind! <><><>")
-    //        let source = segue.source as! FontListViewController
-    //        textBlocks[selectedTextBlockIndex].font = source.selectedFont
-    //    }
     
     // event handler when a field(view) is dragged
     @objc func draggedView(_ sender:UIPanGestureRecognizer){
@@ -160,7 +154,9 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case "Size":
             let cell = tableView.dequeueReusableCell(withIdentifier: "Size", for: indexPath) as! SizeTableViewCell
-            // TODO: cell.delegate = self
+            cell.delegate = self
+            cell.configureSizeCell(size: Int(textBlocks[selectedTextBlockIndex].fontSize))
+            fieldCollection[selectedTextBlockIndex].adjustHeight()
             return cell
         case "Color":
             let cell = tableView.dequeueReusableCell(withIdentifier: "Color", for: indexPath) as! ColorTableViewCell
@@ -196,8 +192,12 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
         print("slider.color is = \(color)")
         if textColorSelected {
             textColorButton.backgroundColor = color
+            textBlocks[selectedTextBlockIndex].textColor = color
+            fieldCollection[selectedTextBlockIndex].textColor = color
         } else {
             textBackgroundButton.backgroundColor = color
+            textBlocks[selectedTextBlockIndex].backgroundColor = color
+            fieldCollection[selectedTextBlockIndex].backgroundColor = color
         }
     }
     
@@ -215,11 +215,52 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
     
     func alignmentSegmentSelected(selectedSegment: Int) {
         print("*** HEY, you pressed alignment segment # \(selectedSegment)")
+        textBlocks[selectedTextBlockIndex].alignment = selectedSegment
+        switch selectedSegment {
+        case 0: // left
+            fieldCollection[selectedTextBlockIndex].textAlignment = NSTextAlignment.left
+        case 1: // center
+            fieldCollection[selectedTextBlockIndex].textAlignment = NSTextAlignment.center
+        case 2: // right
+            fieldCollection[selectedTextBlockIndex].textAlignment = NSTextAlignment.right
+        default:
+            print("😡 ERROR: Should not have occurred!")
+        }
     }
     
     func styleButtonSelected(_ sender: ToggleButton) {
         print("*** HEY, you pressed buttton tagged \(sender.tag)")
         sender.isSelected = !sender.isSelected
+        switch sender.tag {
+        case 0:
+            textBlocks[selectedTextBlockIndex].isBold = sender.isSelected
+            if sender.isSelected {
+                fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.setBoldFnc()
+            } else {
+                fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.toggleBoldFnc()
+            }
+        case 1:
+            textBlocks[selectedTextBlockIndex].isItalic = sender.isSelected
+            if sender.isSelected {
+                fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.setItalicFnc()
+            } else {
+                fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.toggleItalicFnc()
+            }
+        case 2:
+            textBlocks[selectedTextBlockIndex].isUnderlined = sender.isSelected
+            if sender.isSelected {
+                let field = fieldCollection[selectedTextBlockIndex]
+                fieldCollection[selectedTextBlockIndex].attributedText = NSAttributedString(string: field.text!, attributes:
+                    [.underlineStyle: NSUnderlineStyle.single.rawValue])
+            } else {
+                let field = fieldCollection[selectedTextBlockIndex]
+                let attrSting = NSMutableAttributedString(attributedString: fieldCollection[selectedTextBlockIndex].attributedText!)
+                attrSting.removeAttribute(.underlineStyle, range: NSMakeRange(0, field.text!.count))
+                fieldCollection[selectedTextBlockIndex].attributedText = attrSting
+            }
+        default:
+            print("😡 ERROR: styleButton func hit a case outside of cases accounted for")
+        }
     }
     
     func colorSelectionButtonPressed(_ sender: UIButton) {
@@ -248,5 +289,130 @@ extension ViewController: PassFontDelegate {
         fieldCollection[selectedTextBlockIndex].font = selectedFont
         tableView.reloadData()
     }
+}
+
+extension ViewController: SizeCellDelegate {
+    func fontSizeStepperPressed(_ newFontSize: Int) {
+        textBlocks[selectedTextBlockIndex].fontSize = CGFloat(newFontSize)
+        fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.withSize(CGFloat(newFontSize))
+        tableView.reloadData()
+    }
+}
+
+extension UITextField {
+    func adjustHeight () {
+        let originalFrame = self.frame
+        self.sizeToFit()
+        self.frame = CGRect(x: originalFrame.origin.x, y: self.frame.origin.y, width: originalFrame.width, height: self.frame.height)
+    }
+}
+
+extension UIFont {
+    func withTraits(traits:UIFontDescriptor.SymbolicTraits) -> UIFont {
+        let descriptor = fontDescriptor.withSymbolicTraits(traits)
+        return UIFont(descriptor: descriptor!, size: 0) //size 0 means keep the size as it is
+    }
     
+    func bold() -> UIFont {
+        return withTraits(traits: .traitBold)
+    }
+    
+    func italic() -> UIFont {
+        return withTraits(traits: .traitItalic)
+    }
+}
+
+extension UIFont {
+    var isBold: Bool  {
+        return fontDescriptor.symbolicTraits.contains(.traitBold)
+    }
+    
+    var isItalic: Bool {
+        return fontDescriptor.symbolicTraits.contains(.traitItalic)
+    }
+    
+//    var isUnderlined: Bool
+//    {
+//        return fontDescriptor.symbolicTraits.contains(.traitBold)
+//    }
+    
+    func setBoldFnc() -> UIFont {
+        if (isBold) {
+            return self
+        } else {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.insert([.traitBold])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            guard fontAtrDetails != nil else {
+                return self
+            }
+            return UIFont(descriptor: fontAtrDetails!, size: 0)
+        }
+    }
+    
+    func setItalicFnc()-> UIFont {
+        if (isItalic) {
+            return self
+        } else {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.insert([.traitItalic])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            guard fontAtrDetails != nil else {
+                return self
+            }
+            return UIFont(descriptor: fontAtrDetails!, size: 0)
+        }
+    }
+    
+    func setBoldItalicFnc()-> UIFont {
+        return setBoldFnc().setItalicFnc() ?? self
+    }
+    
+    func detBoldFnc() -> UIFont {
+        if(!isBold) {
+            return self
+        } else {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.remove([.traitBold])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            return UIFont(descriptor: fontAtrDetails!, size: 0) ?? self
+        }
+    }
+    
+    func detItalicFnc()-> UIFont {
+        if(!isItalic) {
+            return self
+        } else {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.remove([.traitItalic])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            return UIFont(descriptor: fontAtrDetails!, size: 0) ?? self
+        }
+    }
+    
+    func setNormalFnc()-> UIFont {
+        return detBoldFnc().detItalicFnc() ?? self
+    }
+    
+    func toggleBoldFnc()-> UIFont {
+        if (isBold) {
+            return detBoldFnc() ?? self
+        } else {
+            return setBoldFnc() ?? self
+        }
+    }
+    
+    func toggleItalicFnc()-> UIFont {
+        if (isItalic) {
+            return detItalicFnc() ?? self
+        } else {
+            return setItalicFnc() ?? self
+        }
+    }
+    
+//    func toggleUnderline() -> UIFont {
+//        fieldCollection[selectedTextBlockIndex].attributedText = NSAttributedString(string: field.text!, attributes:
+//            [.underlineStyle: NSUnderlineStyle.single.rawValue])
+//        attr.removeAttribute(NSStrikethroughStyleAttributeName , range:NSMakeRange(0, attr.length))
+//    }
 }

@@ -190,8 +190,11 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="AZ7-ad-k4e">
+                                                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minimumValue="1" maximumValue="150" translatesAutoresizingMaskIntoConstraints="NO" id="AZ7-ad-k4e">
                                                             <rect key="frame" x="52" y="0.0" width="94" height="29"/>
+                                                            <connections>
+                                                                <action selector="stepperPressed:" destination="KAW-7Z-x9e" eventType="valueChanged" id="tFX-cr-zPK"/>
+                                                            </connections>
                                                         </stepper>
                                                     </subviews>
                                                 </stackView>
@@ -203,6 +206,10 @@
                                                 <constraint firstItem="cER-ou-Pvf" firstAttribute="centerY" secondItem="bV4-NO-agt" secondAttribute="centerY" id="jXn-TE-4wB"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="fontSizeLabel" destination="xIe-4M-LwJ" id="9FH-mh-mP8"/>
+                                            <outlet property="fontSizeStepper" destination="AZ7-ad-k4e" id="JwO-Qz-cqA"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Color" rowHeight="70" id="h0D-G7-WOJ" customClass="ColorTableViewCell" customModule="Drag_Text_View_Experiment" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="160" width="375" height="70"/>
