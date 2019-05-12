@@ -24,7 +24,7 @@ class ColorTableViewCell: UITableViewCell, ColorSliderPreviewing {
     }
     
     weak var delegate: ColorCellDelegate?
-   var colorSlider = ColorSlider()
+    var colorSlider = ColorSlider()
     
     func configureColorCell() {
         textColorFrame.layer.borderColor = Colors.buttonTint.cgColor
@@ -33,7 +33,7 @@ class ColorTableViewCell: UITableViewCell, ColorSliderPreviewing {
         let cellFrame = CGRect(x: 0 + 16, y: 40, width: UIScreen.main.bounds.width - 16*2 , height: 20)
         let previewView = DefaultPreviewView(side: .top)
         previewView.offsetAmount = 10.0
-
+        
         let colorSlider = ColorSlider(orientation: .horizontal, previewView: previewView)
         colorSlider.color = textColorButton.backgroundColor!
         textColorFrame.layer.borderWidth = 1.0
@@ -48,9 +48,9 @@ class ColorTableViewCell: UITableViewCell, ColorSliderPreviewing {
     }
     
     @objc func changedColor(_ slider: ColorSlider) {
-         delegate?.changeColorSelected(slider: slider, textColorButton: textColorButton, textBackgroundButton: textBackgroundButton)
+        delegate?.changeColorSelected(slider: slider, textColorButton: textColorButton, textBackgroundButton: textBackgroundButton)
     }
-
+    
     @IBAction func textColorPressed(_ sender: UIButton) {
         delegate?.setSelectedFrame(sender: sender, textColorSelected: true, textColorFrame: textColorFrame, textBackgroundFrame: textBackgroundFrame)
     }

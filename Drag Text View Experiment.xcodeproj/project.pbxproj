@@ -12,6 +12,7 @@
 		3E3A2A1F22869F0F0000D55E /* ColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A2A1E22869F0F0000D55E /* ColorTableViewCell.swift */; };
 		3E3A2A2122869FBD0000D55E /* ColorCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A2A2022869FBD0000D55E /* ColorCellDelegate.swift */; };
 		3E3A2A232286B01D0000D55E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A2A222286B01D0000D55E /* Constants.swift */; };
+		3E3A2A25228718CD0000D55E /* FontListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A2A24228718CD0000D55E /* FontListViewController.swift */; };
 		3E6F4B7B22788C110091832C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6F4B7A22788C110091832C /* AppDelegate.swift */; };
 		3E6F4B7D22788C110091832C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6F4B7C22788C110091832C /* ViewController.swift */; };
 		3E6F4B8022788C110091832C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6F4B7E22788C110091832C /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 		3E3A2A1E22869F0F0000D55E /* ColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTableViewCell.swift; sourceTree = "<group>"; };
 		3E3A2A2022869FBD0000D55E /* ColorCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCellDelegate.swift; sourceTree = "<group>"; };
 		3E3A2A222286B01D0000D55E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3E3A2A24228718CD0000D55E /* FontListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListViewController.swift; sourceTree = "<group>"; };
 		3E49A581DD863B29EF1A6035 /* Pods-Drag Text View Experiment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Drag Text View Experiment.release.xcconfig"; path = "Pods/Target Support Files/Pods-Drag Text View Experiment/Pods-Drag Text View Experiment.release.xcconfig"; sourceTree = "<group>"; };
 		3E6F4B7722788C110091832C /* Drag Text View Experiment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drag Text View Experiment.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E6F4B7A22788C110091832C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				3E9E3CEA228665C6006167DE /* FontTableViewCell.swift */,
 				3E9E3CEC228665D2006167DE /* SizeTableViewCell.swift */,
 				3E3A2A1E22869F0F0000D55E /* ColorTableViewCell.swift */,
+				3E3A2A24228718CD0000D55E /* FontListViewController.swift */,
 				3E6F4B7E22788C110091832C /* Main.storyboard */,
 				3E35DEDB2286678B003624FE /* AlignmentCellDelegate.swift */,
 				3E3A2A2022869FBD0000D55E /* ColorCellDelegate.swift */,
@@ -243,6 +246,7 @@
 				3E3A2A1F22869F0F0000D55E /* ColorTableViewCell.swift in Sources */,
 				3E3A2A2122869FBD0000D55E /* ColorCellDelegate.swift in Sources */,
 				3E6F4B7D22788C110091832C /* ViewController.swift in Sources */,
+				3E3A2A25228718CD0000D55E /* FontListViewController.swift in Sources */,
 				3E6F4B7B22788C110091832C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

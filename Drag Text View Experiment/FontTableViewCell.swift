@@ -9,7 +9,9 @@
 import UIKit
 
 class FontTableViewCell: UITableViewCell {
-
-
-
+    @IBOutlet weak var fontLabel: UILabel!
+    
+    func configureFontCell(selectedFont: UIFont) {
+        fontLabel.text = selectedFont.familyName
+    }
 }

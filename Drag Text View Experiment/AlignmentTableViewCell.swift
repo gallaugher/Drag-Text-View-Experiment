@@ -16,17 +16,14 @@ class AlignmentTableViewCell: UITableViewCell {
     
     @IBAction func alignmentPressed(_ sender: UISegmentedControl) {
         delegate?.alignmentSegmentSelected(selectedSegment: alignmentSegmentedControl.selectedSegmentIndex)
-        //delegate?.didTapPlusButton(at: indexPath)
     }
     
     @IBAction func stylePressed(_ sender: ToggleButton) {
         delegate?.styleButtonSelected(sender)
-        //delegate?.didTapPlusButton(at: indexPath)
     }
 
     @IBAction func colorPressed(_ sender: UIButton) {
         delegate?.colorSelectionButtonPressed(sender)
-        // delegate?.didTapPlusButton(at: indexPath)
     }
 
 }

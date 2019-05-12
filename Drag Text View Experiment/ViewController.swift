@@ -11,6 +11,19 @@ import MKColorPicker
 import ColorSlider
 
 class ViewController: UIViewController, UITextFieldDelegate {
+    
+    struct TextBlock {
+        var text = ""
+        var origin = CGPoint(x: 0, y: 0)
+        var fontColor = UIColor.black
+        var fontSize: CGFloat = 20.0
+        var font = UIFont.systemFont(ofSize: 20.0)
+        var backgroundColor = UIColor.clear
+        var isBold = false
+        var isItalic = false
+        var isUnderlined = false
+    }
+    
     @IBOutlet weak var screenView: UIView! // a 320 x 240 view
     @IBOutlet var fieldCollection: [UITextField]! // Not connected, fields created programmatically
     let colorPicker = ColorPickerViewController()
@@ -18,6 +31,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     var textColorSelected = true // if not, then textBackground must be selected
     let cells = ["Alignment", "Font", "Size", "Color"]
+    var textBlocks: [TextBlock] = []
+    var selectedTextBlockIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +56,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // UITextField created & added to fieldCollection
     func createNewField() {
+        let newBlock = TextBlock()
+        textBlocks.append(newBlock)
+        selectedTextBlockIndex = textBlocks.count-1
         var newFieldRect = CGRect(x: 0, y: 0, width: 320, height: 30)
         let newField = PaddedTextField(frame: newFieldRect)
         newField.borderStyle = .roundedRect
@@ -74,10 +92,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return panGesture
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowFonts" { // then tableView cell was clicked
+            let destination = segue.destination as! FontListViewController
+            destination.delegate = self
+            destination.selectedFont = UIFont.systemFont(ofSize: 20.0)
+        } else {
+            print("ERROR: Should not have arrived in the else in prepareForSegue")
+        }
+    }
+    
+    //    @IBAction func unwindFromFonts(for segue: UIStoryboardSegue, sender: Any?) {
+    //        print("<><><> I'm in the Unwind! <><><>")
+    //        let source = segue.source as! FontListViewController
+    //        textBlocks[selectedTextBlockIndex].font = source.selectedFont
+    //    }
+    
     // event handler when a field(view) is dragged
     @objc func draggedView(_ sender:UIPanGestureRecognizer){
         sender.view!.becomeFirstResponder()
         let selectedView = sender.view as! UITextField
+        selectedTextBlockIndex = fieldCollection.firstIndex(of: selectedView)!
+        print("*** YOU JUST SELECTED VIEW # \(selectedTextBlockIndex)")
         selectedView.bringSubviewToFront(selectedView)
         let translation = sender.translation(in: screenView)
         selectedView.center = CGPoint(x: selectedView.center.x + translation.x, y: selectedView.center.y + translation.y)
@@ -120,7 +156,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case "Font":
             let cell = tableView.dequeueReusableCell(withIdentifier: "Font", for: indexPath) as! FontTableViewCell
-            // TODO: cell.delegate = self
+            cell.configureFontCell(selectedFont: textBlocks[selectedTextBlockIndex].font)
             return cell
         case "Size":
             let cell = tableView.dequeueReusableCell(withIdentifier: "Size", for: indexPath) as! SizeTableViewCell
@@ -145,6 +181,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if cells[indexPath.row] == "Font" {
+            performSegue(withIdentifier: "ShowFonts", sender: nil)
+        }
+    }
 }
 
 // Created protocol to handle clicks within custom cells
@@ -156,7 +197,7 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
         if textColorSelected {
             textColorButton.backgroundColor = color
         } else {
-             textBackgroundButton.backgroundColor = color
+            textBackgroundButton.backgroundColor = color
         }
     }
     
@@ -199,3 +240,13 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
     }
 }
 
+extension ViewController: PassFontDelegate {
+    
+    func getSelectedFont(selectedFont: UIFont) {
+        print("<><><> I'm running GET_SELECTED_FONT! <><><>")
+        textBlocks[selectedTextBlockIndex].font = selectedFont
+        fieldCollection[selectedTextBlockIndex].font = selectedFont
+        tableView.reloadData()
+    }
+    
+}
