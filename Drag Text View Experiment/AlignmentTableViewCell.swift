@@ -13,6 +13,12 @@ class AlignmentTableViewCell: UITableViewCell {
     @IBOutlet weak var alignmentSegmentedControl: UISegmentedControl!
     @IBOutlet weak var styleView: UIView!
     
+    @IBOutlet weak var boldButton: ToggleButton!
+    @IBOutlet weak var italicsButton: ToggleButton!
+    @IBOutlet weak var underlineButton: ToggleButton!
+    
+    @IBOutlet var styleButtonCollection: [ToggleButton]!
+    
     @IBAction func alignmentPressed(_ sender: UISegmentedControl) {
         delegate?.alignmentSegmentSelected(selectedSegment: alignmentSegmentedControl.selectedSegmentIndex)
     }

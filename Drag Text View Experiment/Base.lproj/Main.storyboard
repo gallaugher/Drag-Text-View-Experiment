@@ -128,7 +128,13 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="alignmentSegmentedControl" destination="g5u-RF-iba" id="VGn-dj-I8J"/>
+                                            <outlet property="boldButton" destination="BGs-e7-2Sk" id="VOG-Xf-3Bg"/>
+                                            <outlet property="italicsButton" destination="5op-G4-ofy" id="1yD-Iq-kjs"/>
                                             <outlet property="styleView" destination="MaT-b3-hib" id="6qN-WR-axC"/>
+                                            <outlet property="underlineButton" destination="zUu-Hq-D3W" id="2sA-Hn-zwS"/>
+                                            <outletCollection property="styleButtonCollection" destination="BGs-e7-2Sk" collectionClass="NSMutableArray" id="fdJ-MR-2XE"/>
+                                            <outletCollection property="styleButtonCollection" destination="5op-G4-ofy" collectionClass="NSMutableArray" id="dnd-gL-FgW"/>
+                                            <outletCollection property="styleButtonCollection" destination="zUu-Hq-D3W" collectionClass="NSMutableArray" id="i3b-Ah-Wki"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Font" id="qRN-iS-rq6" customClass="FontTableViewCell" customModule="Drag_Text_View_Experiment" customModuleProvider="target">

@@ -28,15 +28,31 @@ class ToggleButton: UIButton {
     }
     
     func initButton() {
+        setTitleColor(Colors.buttonTint, for: .normal)
+        setTitleColor(UIColor.white, for: .selected)
+        
         if tag == 2 { // It's the underline button
             let stringAttributes : [NSAttributedString.Key : Any] = [
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14.0),
                 NSAttributedString.Key.foregroundColor : Colors.buttonTint,
+                NSAttributedString.Key.backgroundColor : UIColor.white,
                 NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue
             ]
             let attributeString = NSMutableAttributedString(string: "U",
                                                             attributes: stringAttributes)
             setAttributedTitle(attributeString, for: .normal)
+            
+            let selectedStringAttributes : [NSAttributedString.Key : Any] =  [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14.0),
+                NSAttributedString.Key.foregroundColor : UIColor.white,
+                NSAttributedString.Key.backgroundColor : Colors.buttonTint,
+                NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue
+            ]
+            let selectedAttributeString = NSMutableAttributedString(string: "U",
+                                                            attributes: selectedStringAttributes)
+            setAttributedTitle(selectedAttributeString, for: .selected)
+
+
         } else {
             setTitleColor(Colors.buttonTint, for: .normal)
         }
@@ -47,21 +63,61 @@ class ToggleButton: UIButton {
     
     @objc func buttonPressed(_ sender: UIButton) {
         buttonSelected.toggle()
-        buttonTextColor = buttonSelected ? UIColor.white : Colors.buttonTint
         buttonBackgroundColor = buttonSelected ?  Colors.buttonTint: UIColor.white
-        if tag == 2 { // It's the underline button
-            let stringAttributes : [NSAttributedString.Key : Any] = [
-                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14.0),
-                NSAttributedString.Key.foregroundColor : buttonTextColor,
-                NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue
-            ]
-            let attributeString = NSMutableAttributedString(string: "U",
-                                                            attributes: stringAttributes)
-            setAttributedTitle(attributeString, for: .normal)
-        } else {
-            setTitleColor(buttonTextColor, for: .normal)
-        }
-    
         backgroundColor = buttonBackgroundColor
+        self.sendActions(for: .valueChanged)
+//        if tag == 2 { // It's the underline button
+//            if isSelected {
+//            let stringAttributes : [NSAttributedString.Key : Any] = [
+//                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14.0),
+//                NSAttributedString.Key.foregroundColor : buttonTextColor,
+//                NSAttributedString.Key.backgroundColor : UIColor.white,
+//                NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue
+//            ]
+//            let attributeString = NSMutableAttributedString(string: "U",
+//                                                            attributes: stringAttributes)
+//            setAttributedTitle(attributeString, for: .normal)
+//            } else {
+//                
+//            }
+//        }
+    }
+    
+    func configureButtonState(state: UIControl.State) {
+        print("*** calling setButtonState ***")
+        if state == .selected {
+            self.isSelected = true
+            buttonTextColor = UIColor.white
+            buttonBackgroundColor = Colors.buttonTint
+            if tag == 2 {
+                let stringAttributes : [NSAttributedString.Key : Any] = [
+                    NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14.0),
+                    NSAttributedString.Key.foregroundColor : UIColor.white,
+                    NSAttributedString.Key.backgroundColor : Colors.buttonTint,
+                    NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue
+                ]
+                let attributeString = NSMutableAttributedString(string: "U",
+                                                                attributes: stringAttributes)
+                setAttributedTitle(attributeString, for: .normal)
+            }
+        } else {
+            self.isSelected = false
+            buttonTextColor = Colors.buttonTint
+            buttonBackgroundColor = UIColor.white
+            if tag == 2 {
+                let stringAttributes : [NSAttributedString.Key : Any] = [
+                    NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14.0),
+                    NSAttributedString.Key.foregroundColor : Colors.buttonTint,
+                    NSAttributedString.Key.backgroundColor : UIColor.white,
+                    NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue
+                ]
+                let attributeString = NSMutableAttributedString(string: "U",
+                                                                attributes: stringAttributes)
+                setAttributedTitle(attributeString, for: .normal)
+            }
+        }
+        self.setTitleColor(buttonTextColor, for: state)
+        self.backgroundColor = buttonBackgroundColor
+        self.sendActions(for: .valueChanged)
     }
 }

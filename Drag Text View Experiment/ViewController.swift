@@ -12,6 +12,12 @@ import ColorSlider
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
+    enum StyleButtons: Int {
+        case bold = 0
+        case italic = 1
+        case underline = 2
+    }
+    
     struct TextBlock {
         var text = ""
         var origin = CGPoint(x: 0, y: 0)
@@ -49,6 +55,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // Select / deselect text fields
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.borderStyle = .roundedRect
+        selectedTextBlockIndex = fieldCollection.firstIndex(of: textField)!
+        tableView.reloadData()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -102,15 +110,34 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func formatAlignmentCell(cell: AlignmentTableViewCell) {
+        cell.styleView.layer.cornerRadius = 5.0
+        cell.styleView.layer.borderWidth = 1.0
+        cell.styleView.layer.borderColor = Colors.buttonTint.cgColor
+        
+        cell.alignmentSegmentedControl.selectedSegmentIndex = textBlocks[selectedTextBlockIndex].alignment
+        cell.alignmentSegmentedControl.sendActions(for: .valueChanged)
+        let textBlock = textBlocks[selectedTextBlockIndex]
+        textBlock.isBold ? cell.boldButton.configureButtonState(state: .selected) : cell.boldButton.configureButtonState(state: .normal)
+        textBlock.isItalic ? cell.italicsButton.configureButtonState(state: .selected) : cell.italicsButton.configureButtonState(state: .normal)
+        textBlock.isUnderlined ? cell.underlineButton.configureButtonState(state: .selected) : cell.underlineButton.configureButtonState(state: .normal)
+    }
+    
     // event handler when a field(view) is dragged
     @objc func draggedView(_ sender:UIPanGestureRecognizer){
-        sender.view!.becomeFirstResponder()
-        let selectedView = sender.view as! UITextField
-        selectedTextBlockIndex = fieldCollection.firstIndex(of: selectedView)!
-        print("*** YOU JUST SELECTED VIEW # \(selectedTextBlockIndex)")
-        selectedView.bringSubviewToFront(selectedView)
+        
+        if (sender.state == UIGestureRecognizer.State.began) {
+            
+            sender.view!.becomeFirstResponder()
+            let selectedView = sender.view as! UITextField
+            selectedTextBlockIndex = fieldCollection.firstIndex(of: selectedView)!
+            print("*** HEY IT STARTED ***")
+            print("*** selectedTextBlockIndex = \(selectedTextBlockIndex) ***")
+            selectedView.bringSubviewToFront(selectedView)
+            tableView.reloadData()
+        }
         let translation = sender.translation(in: screenView)
-        selectedView.center = CGPoint(x: selectedView.center.x + translation.x, y: selectedView.center.y + translation.y)
+        sender.view!.center = CGPoint(x: sender.view!.center.x + translation.x, y: sender.view!.center.y + translation.y)
         sender.setTranslation(CGPoint.zero, in: screenView)
     }
     
@@ -143,9 +170,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         switch cells[indexPath.row] {
         case "Alignment":
             let cell = tableView.dequeueReusableCell(withIdentifier: "Alignment", for: indexPath) as! AlignmentTableViewCell
-            cell.styleView.layer.cornerRadius = 5.0
-            cell.styleView.layer.borderWidth = 1.0
-            cell.styleView.layer.borderColor = Colors.buttonTint.cgColor
+            formatAlignmentCell(cell: cell)
             cell.delegate = self
             return cell
         case "Font":
@@ -216,6 +241,8 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
     func alignmentSegmentSelected(selectedSegment: Int) {
         print("*** HEY, you pressed alignment segment # \(selectedSegment)")
         textBlocks[selectedTextBlockIndex].alignment = selectedSegment
+        print("selectedTextBlockIndex in alignmentSegmentSelected = \(selectedSegment)")
+        print("textBlocks[selectedTextBlockIndex].alignment in alignmentSegmentSelected = \(textBlocks[selectedTextBlockIndex].alignment)")
         switch selectedSegment {
         case 0: // left
             fieldCollection[selectedTextBlockIndex].textAlignment = NSTextAlignment.left
@@ -236,27 +263,35 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
             textBlocks[selectedTextBlockIndex].isBold = sender.isSelected
             if sender.isSelected {
                 fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.setBoldFnc()
+                sender.configureButtonState(state: .selected)
             } else {
                 fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.toggleBoldFnc()
+                sender.configureButtonState(state: .normal)
             }
         case 1:
             textBlocks[selectedTextBlockIndex].isItalic = sender.isSelected
             if sender.isSelected {
                 fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.setItalicFnc()
+                sender.configureButtonState(state: .selected)
             } else {
-                fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.toggleItalicFnc()
+                fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.deleteItalicFont()
+                sender.configureButtonState(state: .normal)
             }
         case 2:
             textBlocks[selectedTextBlockIndex].isUnderlined = sender.isSelected
             if sender.isSelected {
+                sender.configureButtonState(state: .selected)
                 let field = fieldCollection[selectedTextBlockIndex]
                 fieldCollection[selectedTextBlockIndex].attributedText = NSAttributedString(string: field.text!, attributes:
                     [.underlineStyle: NSUnderlineStyle.single.rawValue])
+                sender.configureButtonState(state: .selected)
             } else {
+                sender.configureButtonState(state: .normal)
                 let field = fieldCollection[selectedTextBlockIndex]
-                let attrSting = NSMutableAttributedString(attributedString: fieldCollection[selectedTextBlockIndex].attributedText!)
-                attrSting.removeAttribute(.underlineStyle, range: NSMakeRange(0, field.text!.count))
-                fieldCollection[selectedTextBlockIndex].attributedText = attrSting
+                
+                fieldCollection[selectedTextBlockIndex].attributedText = NSAttributedString(string: field.text!, attributes:
+                    [.underlineStyle: 0])
+                sender.configureButtonState(state: .normal)
             }
         default:
             print("😡 ERROR: styleButton func hit a case outside of cases accounted for")
@@ -331,10 +366,10 @@ extension UIFont {
         return fontDescriptor.symbolicTraits.contains(.traitItalic)
     }
     
-//    var isUnderlined: Bool
-//    {
-//        return fontDescriptor.symbolicTraits.contains(.traitBold)
-//    }
+    //    var isUnderlined: Bool
+    //    {
+    //        return fontDescriptor.symbolicTraits.contains(.traitBold)
+    //    }
     
     func setBoldFnc() -> UIFont {
         if (isBold) {
@@ -379,7 +414,7 @@ extension UIFont {
         }
     }
     
-    func detItalicFnc()-> UIFont {
+    func deleteItalicFont()-> UIFont {
         if(!isItalic) {
             return self
         } else {
@@ -391,7 +426,7 @@ extension UIFont {
     }
     
     func setNormalFnc()-> UIFont {
-        return detBoldFnc().detItalicFnc() ?? self
+        return detBoldFnc().deleteItalicFont() ?? self
     }
     
     func toggleBoldFnc()-> UIFont {
@@ -404,15 +439,15 @@ extension UIFont {
     
     func toggleItalicFnc()-> UIFont {
         if (isItalic) {
-            return detItalicFnc() ?? self
+            return deleteItalicFont() ?? self
         } else {
             return setItalicFnc() ?? self
         }
     }
     
-//    func toggleUnderline() -> UIFont {
-//        fieldCollection[selectedTextBlockIndex].attributedText = NSAttributedString(string: field.text!, attributes:
-//            [.underlineStyle: NSUnderlineStyle.single.rawValue])
-//        attr.removeAttribute(NSStrikethroughStyleAttributeName , range:NSMakeRange(0, attr.length))
-//    }
+    //    func toggleUnderline() -> UIFont {
+    //        fieldCollection[selectedTextBlockIndex].attributedText = NSAttributedString(string: field.text!, attributes:
+    //            [.underlineStyle: NSUnderlineStyle.single.rawValue])
+    //        attr.removeAttribute(NSStrikethroughStyleAttributeName , range:NSMakeRange(0, attr.length))
+    //    }
 }
