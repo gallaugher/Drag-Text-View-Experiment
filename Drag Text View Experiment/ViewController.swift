@@ -10,6 +10,7 @@ import UIKit
 import MKColorPicker
 import ColorSlider
 
+
 class ViewController: UIViewController, UITextFieldDelegate {
     
     enum StyleButtons: Int {
@@ -18,21 +19,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         case underline = 2
     }
     
-    struct TextBlock {
-        var text = ""
-        var origin = CGPoint(x: 0, y: 0)
-        var textColor = UIColor.black
-        var fontSize: CGFloat = 20.0
-        var font = UIFont.systemFont(ofSize: 20.0)
-        var backgroundColor = UIColor.clear
-        var isBold = false
-        var isItalic = false
-        var isUnderlined = false
-        var alignment = 0 // left alignment
-    }
-    
     @IBOutlet weak var screenView: UIView! // a 320 x 240 view
     @IBOutlet var fieldCollection: [UITextField]! // Not connected, fields created programmatically
+    @IBOutlet weak var deleteTextButton: UIButton!
+    
     let colorPicker = ColorPickerViewController()
     @IBOutlet weak var tableView: UITableView!
     
@@ -47,6 +37,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         tableView.dataSource = self
         // hide keyboard if we tap outside of a field
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        deleteTextButton.isEnabled = false
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
         createNewField()
@@ -57,10 +48,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         textField.borderStyle = .roundedRect
         selectedTextBlockIndex = fieldCollection.firstIndex(of: textField)!
         tableView.reloadData()
+        deleteTextButton.isEnabled = true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.borderStyle = .none
+        deleteTextButton.isEnabled = false
     }
     
     // UITextField created & added to fieldCollection
@@ -104,7 +97,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if segue.identifier == "ShowFonts" { // then tableView cell was clicked
             let destination = segue.destination as! FontListViewController
             destination.delegate = self
-            destination.selectedFont = UIFont.systemFont(ofSize: 20.0)
+            destination.selectedFont = fieldCollection[selectedTextBlockIndex].font
         } else {
             print("ERROR: Should not have arrived in the else in prepareForSegue")
         }
@@ -131,10 +124,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
             sender.view!.becomeFirstResponder()
             let selectedView = sender.view as! UITextField
             selectedTextBlockIndex = fieldCollection.firstIndex(of: selectedView)!
-            print("*** HEY IT STARTED ***")
-            print("*** selectedTextBlockIndex = \(selectedTextBlockIndex) ***")
             selectedView.bringSubviewToFront(selectedView)
             tableView.reloadData()
+            deleteTextButton.isEnabled = true
         }
         let translation = sender.translation(in: screenView)
         sender.view!.center = CGPoint(x: sender.view!.center.x + translation.x, y: sender.view!.center.y + translation.y)
@@ -145,6 +137,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         createNewField()
     }
     
+    @IBAction func deleteFieldPressed(_ sender: UIButton) {
+    }
 }
 
 class PaddedTextField: UITextField {
@@ -181,12 +175,14 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "Size", for: indexPath) as! SizeTableViewCell
             cell.delegate = self
             cell.configureSizeCell(size: Int(textBlocks[selectedTextBlockIndex].fontSize))
+            
+            fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.withSize(CGFloat(textBlocks[selectedTextBlockIndex].fontSize))
             fieldCollection[selectedTextBlockIndex].adjustHeight()
             return cell
         case "Color":
             let cell = tableView.dequeueReusableCell(withIdentifier: "Color", for: indexPath) as! ColorTableViewCell
             cell.delegate = self
-            cell.configureColorCell()
+            cell.configureColorCell(textBlock: textBlocks[selectedTextBlockIndex])
             return cell
         default:
             print("HEY THIS SHOULD NOT HAVE OCCURRED *** ERROR ***")
@@ -224,6 +220,7 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
             textBlocks[selectedTextBlockIndex].backgroundColor = color
             fieldCollection[selectedTextBlockIndex].backgroundColor = color
         }
+        
     }
     
     func setSelectedFrame(sender: UIButton, textColorSelected: Bool, textColorFrame: UIView, textBackgroundFrame: UIView) {
@@ -297,23 +294,6 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
             print("😡 ERROR: styleButton func hit a case outside of cases accounted for")
         }
     }
-    
-    func colorSelectionButtonPressed(_ sender: UIButton) {
-        print("*** HEY, you pressed the COLOR button")
-        //To inialize the picker as popover controller
-        colorPicker.style = .square
-        if let popoverController = colorPicker.popoverPresentationController{
-            popoverController.delegate = colorPicker
-            popoverController.permittedArrowDirections = .any
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
-        }
-        self.present(colorPicker, animated: true, completion: nil)
-        
-        colorPicker.selectedColor = { color in
-            sender.backgroundColor = color
-        }
-    }
 }
 
 extension ViewController: PassFontDelegate {
@@ -358,6 +338,7 @@ extension UIFont {
 }
 
 extension UIFont {
+    
     var isBold: Bool  {
         return fontDescriptor.symbolicTraits.contains(.traitBold)
     }
@@ -418,10 +399,14 @@ extension UIFont {
         if(!isItalic) {
             return self
         } else {
+            var originalFontDescriptor = fontDescriptor
             var fontAtrAry = fontDescriptor.symbolicTraits
             fontAtrAry.remove([.traitItalic])
-            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
-            return UIFont(descriptor: fontAtrDetails!, size: 0) ?? self
+            var fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            if fontAtrDetails == nil {
+               fontAtrDetails = originalFontDescriptor
+            }
+            return UIFont(descriptor: fontAtrDetails!, size: 0)
         }
     }
     

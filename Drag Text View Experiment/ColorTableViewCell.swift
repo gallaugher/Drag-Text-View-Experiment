@@ -14,6 +14,7 @@ class ColorTableViewCell: UITableViewCell, ColorSliderPreviewing {
     @IBOutlet weak var textColorButton: UIButton!
     @IBOutlet weak var textBackgroundFrame: UIView!
     @IBOutlet weak var textBackgroundButton: UIButton!
+    weak var delegate: ColorCellDelegate?
     
     func colorChanged(to color: UIColor) {
         print("nothing needed here")
@@ -23,25 +24,35 @@ class ColorTableViewCell: UITableViewCell, ColorSliderPreviewing {
         print("nothing needed here")
     }
     
-    weak var delegate: ColorCellDelegate?
-    var colorSlider = ColorSlider()
-    
-    func configureColorCell() {
+    func configureColorCell(textBlock: TextBlock) {
         textColorFrame.layer.borderColor = Colors.buttonTint.cgColor
         textBackgroundFrame.layer.borderColor = Colors.buttonTint.cgColor
         
-        let cellFrame = CGRect(x: 0 + 16, y: 40, width: UIScreen.main.bounds.width - 16*2 , height: 20)
-        let previewView = DefaultPreviewView(side: .top)
-        previewView.offsetAmount = 10.0
+        textColorButton.backgroundColor = textBlock.textColor
+        textBackgroundButton.backgroundColor = textBlock.backgroundColor
         
-        let colorSlider = ColorSlider(orientation: .horizontal, previewView: previewView)
-        colorSlider.color = textColorButton.backgroundColor!
+        configureSlider()
+        
         textColorFrame.layer.borderWidth = 1.0
         textColorButton.layer.borderWidth = 0.5
         textColorButton.layer.borderColor = UIColor.lightGray.cgColor
-        textColorButton.layer.backgroundColor = UIColor.darkText.cgColor
         textBackgroundButton.layer.borderWidth = 0.5
         textBackgroundButton.layer.borderColor = UIColor.lightGray.cgColor
+    }
+    
+    func configureSlider() {
+        // Remove the prior slider. If you don't do this, you'll see a buildup of accumulating sliders in the view hierarchy (click debug view hierarcy to see, if you comment out the loop below
+        for subview in self.contentView.subviews {
+            if subview is ColorSlider {
+                subview.removeFromSuperview()
+            }
+        }
+        var colorSlider = ColorSlider()
+        let cellFrame = CGRect(x: 0 + 16, y: 40, width: UIScreen.main.bounds.width - 16*2 , height: 20)
+        let previewView = DefaultPreviewView(side: .top)
+        previewView.offsetAmount = 10.0
+        colorSlider = ColorSlider(orientation: .horizontal, previewView: previewView)
+        colorSlider.color = textColorButton.backgroundColor!
         colorSlider.frame = cellFrame
         contentView.addSubview(colorSlider)
         colorSlider.addTarget(self, action: #selector(changedColor(_:)), for: .valueChanged)

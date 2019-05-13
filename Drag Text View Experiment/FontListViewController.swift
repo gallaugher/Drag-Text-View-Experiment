@@ -29,10 +29,10 @@ class FontListViewController: UIViewController {
             selectedFont = UIFont.systemFont(ofSize: fontSizeForCells)
         }
         fontList = UIFont.familyNames
+        fontList.append(UIFont.systemFont(ofSize: fontSizeForCells).familyName)
         fontList.sort()
         tableView.reloadData()
-        
-        let foundFontIndex = fontList.firstIndex(of: selectedFont.fontName)
+        let foundFontIndex = fontList.firstIndex(of: selectedFont.familyName)
         if foundFontIndex == nil {
             print("😡 ERROR: Font \(selectedFont.fontName) cannot be found on this device. Using System Font")
             selectedFontIndex = 0
@@ -40,7 +40,12 @@ class FontListViewController: UIViewController {
             selectedFontIndex = foundFontIndex!
         }
         selectedFont = UIFont(name: fontList[selectedFontIndex], size: fontSizeForCells)
-        tableView.selectRow(at: IndexPath(row: selectedFontIndex, section: 0), animated: true, scrollPosition: .middle)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let indexPathOfSelected = IndexPath(row: selectedFontIndex, section: 0)
+        tableView.selectRow(at: indexPathOfSelected, animated: true, scrollPosition: .middle)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

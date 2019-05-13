@@ -13,5 +13,4 @@ import UIKit
 protocol AlignmentCellDelegate: class {
     func alignmentSegmentSelected(selectedSegment: Int)
     func styleButtonSelected(_ sender: ToggleButton)
-    func colorSelectionButtonPressed(_ sender: UIButton)
 }
