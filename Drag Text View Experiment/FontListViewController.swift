@@ -40,6 +40,9 @@ class FontListViewController: UIViewController {
             selectedFontIndex = foundFontIndex!
         }
         selectedFont = UIFont(name: fontList[selectedFontIndex], size: fontSizeForCells)
+        
+        tableView.estimatedRowHeight = 600
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,30 +65,31 @@ extension FontListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CheckmarkTableViewCell
         configureCheckmark(for: cell, at: indexPath)
         let cellFont = UIFont(name: fontList[indexPath.row], size: 20.0)
-        cell.textLabel?.font = cellFont
-        cell.textLabel?.text = fontList[indexPath.row]
+        cell.fontLabel?.font = cellFont
+        cell.fontLabel?.text = fontList[indexPath.row]
+        cell.fontLabel.sizeToFit()
         return cell
     }
     
-    func configureCheckmark(for cell: UITableViewCell, at indexPath: IndexPath) {
+    func configureCheckmark(for cell: CheckmarkTableViewCell, at indexPath: IndexPath) {
         let selectedFontIndexPath = IndexPath(row: selectedFontIndex, section: 0)
         if selectedFontIndexPath == indexPath {
             // add check
-            cell.accessoryType = .checkmark
+            cell.checkMarkLabel.text = "✔️"
         } else {
-            cell.accessoryType = .none
+            cell.checkMarkLabel.text = ""
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let oldSelectedIndexPath = IndexPath(row: selectedFontIndex, section: 0)
-        let oldCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: oldSelectedIndexPath)
+        let oldCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: oldSelectedIndexPath) as! CheckmarkTableViewCell
         configureCheckmark(for: oldCell, at: oldSelectedIndexPath)
         selectedFontIndex = indexPath.row
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CheckmarkTableViewCell
         configureCheckmark(for: cell, at: indexPath)
         tableView.reloadData()
     }
