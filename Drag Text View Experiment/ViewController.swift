@@ -10,7 +10,6 @@ import UIKit
 import MKColorPicker
 import ColorSlider
 
-
 class ViewController: UIViewController, UITextFieldDelegate {
     
     enum StyleButtons: Int {
@@ -22,7 +21,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var screenView: UIView! // a 320 x 240 view
     @IBOutlet var fieldCollection: [UITextField]! // Not connected, fields created programmatically
     @IBOutlet weak var deleteTextButton: UIButton!
-    
+    @IBOutlet weak var editStyleBarButton: UIBarButtonItem!
     let colorPicker = ColorPickerViewController()
     @IBOutlet weak var tableView: UITableView!
     
@@ -138,6 +137,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func deleteFieldPressed(_ sender: UIButton) {
+        let fieldRemoved = fieldCollection[selectedTextBlockIndex]
+        for subview in screenView.subviews {
+            if subview == fieldRemoved {
+                subview.removeFromSuperview()
+            }
+        }
+        fieldCollection.remove(at: selectedTextBlockIndex)
+        textBlocks.remove(at: selectedTextBlockIndex)
+        if fieldCollection.count == 0 { // deleted the only row
+            createNewField()
+        } else if fieldCollection.count < selectedTextBlockIndex {
+            selectedTextBlockIndex = selectedTextBlockIndex - 1
+        } // else unchanged since row that was selectedTextBlockIndex + 1 is now one below, where the deleted row used to be
+        tableView.reloadData()
+    }
+    
+    @IBAction func editStylePressed(_ sender: UIBarButtonItem) {
+        fieldCollection[selectedTextBlockIndex].resignFirstResponder()
     }
 }
 
@@ -160,11 +177,26 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         return cells.count
     }
     
+    func updateFieldBasedOnStyleButtons(cell: AlignmentTableViewCell) {
+        if cell.boldButton.isSelected {
+            fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.setBoldFnc()
+        }
+        if cell.italicsButton.isSelected {
+            fieldCollection[selectedTextBlockIndex].font = fieldCollection[selectedTextBlockIndex].font?.setItalicFnc()
+        }
+        if cell.underlineButton.isSelected {
+            let field = fieldCollection[selectedTextBlockIndex]
+            fieldCollection[selectedTextBlockIndex].attributedText = NSAttributedString(string: field.text!, attributes:
+                [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch cells[indexPath.row] {
         case "Alignment":
             let cell = tableView.dequeueReusableCell(withIdentifier: "Alignment", for: indexPath) as! AlignmentTableViewCell
             formatAlignmentCell(cell: cell)
+            updateFieldBasedOnStyleButtons(cell: cell)
             cell.delegate = self
             return cell
         case "Font":
@@ -207,7 +239,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 // Created protocol to handle clicks within custom cells
 extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
-    
     func changeColorSelected(slider: ColorSlider, textColorButton: UIButton, textBackgroundButton: UIButton) {
         let color = slider.color
         print("slider.color is = \(color)")
@@ -299,7 +330,6 @@ extension ViewController: AlignmentCellDelegate, ColorCellDelegate {
 extension ViewController: PassFontDelegate {
     
     func getSelectedFont(selectedFont: UIFont) {
-        print("<><><> I'm running GET_SELECTED_FONT! <><><>")
         textBlocks[selectedTextBlockIndex].font = selectedFont
         fieldCollection[selectedTextBlockIndex].font = selectedFont
         tableView.reloadData()
@@ -388,9 +418,13 @@ extension UIFont {
         if(!isBold) {
             return self
         } else {
+            var originalFontDescriptor = fontDescriptor
             var fontAtrAry = fontDescriptor.symbolicTraits
             fontAtrAry.remove([.traitBold])
-            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            var fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            if fontAtrDetails == nil {
+                fontAtrDetails = originalFontDescriptor
+            }
             return UIFont(descriptor: fontAtrDetails!, size: 0) ?? self
         }
     }
@@ -404,7 +438,7 @@ extension UIFont {
             fontAtrAry.remove([.traitItalic])
             var fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
             if fontAtrDetails == nil {
-               fontAtrDetails = originalFontDescriptor
+                fontAtrDetails = originalFontDescriptor
             }
             return UIFont(descriptor: fontAtrDetails!, size: 0)
         }

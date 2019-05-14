@@ -334,7 +334,15 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="ceB-Uh-fUt">
-                        <barButtonItem key="leftBarButtonItem" systemItem="camera" id="IRB-5b-sLl"/>
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="camera" id="IRB-5b-sLl"/>
+                            <barButtonItem image="Edit_Font" id="DBt-29-Gp8">
+                                <inset key="imageInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <action selector="editStylePressed:" destination="BYZ-38-t0r" id="pZ0-DV-gBq"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="save" id="3J4-nF-ng1"/>
                             <barButtonItem systemItem="cancel" id="8On-bT-TxV"/>
@@ -342,6 +350,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="deleteTextButton" destination="7Xi-IB-WJz" id="7Km-gC-87u"/>
+                        <outlet property="editStyleBarButton" destination="DBt-29-Gp8" id="Mzh-5Z-OF4"/>
                         <outlet property="screenView" destination="RGm-5d-UGQ" id="F0Z-Ml-o0o"/>
                         <outlet property="tableView" destination="3ew-Tw-DQ4" id="L40-Y3-Q5x"/>
                     </connections>
@@ -419,6 +428,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Edit_Font" width="29.333333969116211" height="29.333333969116211"/>
         <image name="center" width="18" height="8"/>
         <image name="left" width="18" height="8"/>
         <image name="right" width="18" height="8"/>
